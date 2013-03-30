@@ -5,7 +5,7 @@ Usage:
 
 wget --no-check-certificate -O forward.py https://raw.github.com/vinodpandey/python-port-forward/master/forward.py
 
-sudo python forward.py 
+sudo python forward.py 80 8000 
 
 
 Author: Ricardo Pascal 
