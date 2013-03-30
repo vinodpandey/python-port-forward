@@ -13,7 +13,6 @@ import sys
 # But when buffer get to high or delay go too down, you can broke things
 buffer_size = 4096
 delay = 0.0001
-forward_to = ('localhost', 8080)
 
 class Forward:
     def __init__(self):
@@ -89,7 +88,10 @@ class TheServer:
         self.channel[self.s].send(data)
 
 if __name__ == '__main__':
-        server = TheServer('', 80)
+        if len(sys.argv) < 3:
+              sys.exit('Usage: sudo python %s source_port target_port\n       e.g. forward.py 80 8000' % sys.argv[0])
+        forward_to = ('localhost', int(sys.argv[2]))
+        server = TheServer('', int(sys.argv[1]))
         try:
             server.main_loop()
         except KeyboardInterrupt:
