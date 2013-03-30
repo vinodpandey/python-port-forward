@@ -2,13 +2,17 @@ python-port-forward
 ===================
 
 Usage: 
-
-wget --no-check-certificate -O forward.py https://raw.github.com/vinodpandey/python-port-forward/master/forward.py
-
-sudo python forward.py 80 8000 
+git clone git@github.com:vinodpandey/python-port-forward.git
 
 
-Author: Ricardo Pascal 
+This script forwards a number of configured local ports
+to local or remote socket servers.
 
-For more info:
-http://voorloopnul.com/blog/a-python-proxy-in-less-than-100-lines-of-code/
+Configuration:
+Add to the config file port-forward.config lines with
+contents as follows:
+<local incoming port> <dest hostname> <dest port>
+
+Start the application at command line with 'sudo python port-forward.py'
+and stop the application by keying in <ctrl-c>.
+Error messages are stored in file 'error.log'.
