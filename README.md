@@ -11,7 +11,7 @@ to local or remote socket servers.
 Configuration:
 Add to the config file port-forward.config lines with
 contents as follows:
-<local incoming port> <dest hostname> <dest port>
+local incoming port dest hostname dest port
 
 Start the application at command line with 'sudo python port-forward.py'
 and stop the application by keying in <ctrl-c>.
