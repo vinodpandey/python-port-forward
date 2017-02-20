@@ -30,10 +30,3 @@ Start the application at command line with 'sudo python port-forward.py' and sto
 ```
 Error messages are stored in file 'error.log'.
 ```
-
-## Test usage
-* Update port-forward.config with below content
-```
-8080 google.com 80
-```
-*
