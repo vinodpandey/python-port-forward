@@ -15,12 +15,12 @@
 #
 # Error messages are stored in file 'error.log'.
 #
- 
+
 import socket
 import sys
 import thread
 import time
- 
+
 def main(setup, error):
     # open file for error messages
     sys.stderr = file(error, 'a')
@@ -30,14 +30,18 @@ def main(setup, error):
     # wait for <ctrl-c>
     while True:
        time.sleep(60)
- 
+
 def parse(setup):
     settings = list()
     for line in file(setup):
+        # skip comment line
+        if line.startswith('#'):
+            continue
+
         parts = line.split()
         settings.append((int(parts[0]), parts[1], int(parts[2])))
     return settings
- 
+
 def server(*settings):
     try:
         dock_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -51,7 +55,7 @@ def server(*settings):
             thread.start_new_thread(forward, (server_socket, client_socket))
     finally:
         thread.start_new_thread(server, settings)
- 
+
 def forward(source, destination):
     string = ' '
     while string:
@@ -61,6 +65,6 @@ def forward(source, destination):
         else:
             source.shutdown(socket.SHUT_RD)
             destination.shutdown(socket.SHUT_WR)
- 
+
 if __name__ == '__main__':
     main('port-forward.config', 'error.log')
