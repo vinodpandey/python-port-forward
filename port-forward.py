@@ -21,12 +21,18 @@ import sys
 import thread
 import time
 
-def main(setup, error):
+def main(setup, error, args):
     # open file for error messages
     sys.stderr = file(error, 'a')
-    # read settings for port forwarding
-    for settings in parse(setup):
-        thread.start_new_thread(server, settings)
+
+    # if args
+    if (len(args) > 0):
+        for settings in parse_args(args):
+            thread.start_new_thread(server, settings)
+    else:
+        # read settings for port forwarding
+        for settings in parse(setup):
+            thread.start_new_thread(server, settings)
     # wait for <ctrl-c>
     while True:
        time.sleep(60)
@@ -39,6 +45,13 @@ def parse(setup):
             continue
 
         parts = line.split()
+        settings.append((int(parts[0]), parts[1], int(parts[2])))
+    return settings
+
+def parse_args(args):
+    settings = list()
+    for line in args:
+        parts = line.split(":")
         settings.append((int(parts[0]), parts[1], int(parts[2])))
     return settings
 
@@ -67,4 +80,4 @@ def forward(source, destination):
             destination.shutdown(socket.SHUT_WR)
 
 if __name__ == '__main__':
-    main('port-forward.config', 'error.log')
+    main('port-forward.config', 'error.log', sys.argv[1:])
