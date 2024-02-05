@@ -18,15 +18,17 @@
 
 import socket
 import sys
-import thread
+import _thread as thread
 import time
+
 
 def main(setup, error, args):
     # open file for error messages
-    sys.stderr = file(error, 'a')
+    with open(error, 'a') as error_file:
+        sys.stderr = error_file
 
     # if args
-    if (len(args) > 0):
+    if len(args) > 0:
         for settings in parse_args(args):
             thread.start_new_thread(server, settings)
     else:
@@ -39,13 +41,14 @@ def main(setup, error, args):
 
 def parse(setup):
     settings = list()
-    for line in file(setup):
-        # skip comment line
-        if line.startswith('#'):
-            continue
+    with open(setup, 'r') as file:
+        for line in file:
+            # skip comment line
+            if line.startswith('#'):
+                continue
 
-        parts = line.split()
-        settings.append((int(parts[0]), parts[1], int(parts[2])))
+            parts = line.split()
+            settings.append((int(parts[0]), parts[1], int(parts[2])))
     return settings
 
 def parse_args(args):
@@ -80,4 +83,7 @@ def forward(source, destination):
             destination.shutdown(socket.SHUT_WR)
 
 if __name__ == '__main__':
+    if sys.version_info[0] < 3:
+        print("This script requires Python 3. Please upgrade your Python version.")
+        sys.exit(1)
     main('port-forward.config', 'error.log', sys.argv[1:])
